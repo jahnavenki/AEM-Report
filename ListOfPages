@@ -24,3 +24,27 @@ group.1_group.1_path.value=exists
 fulltext=Trustee and fund documents
 orderby=@jcr:content/cq:lastModified
 orderby.sort=desc
+
+
+roup.1_group.path=/content/cfs-winged/au/en/about-us
+group.1_group.type=cq:Page
+
+# Ensure the page has a publish date (MUST)
+group.1_group.1_property=@jcr:content/cq:lastReplicated
+group.1_group.1_property.operation=exists
+
+# Tags (COULD)
+group.1_group.2_property=@jcr:content/cq:tags
+group.1_group.2_property.operation=exists
+
+# Meta description (SHOULD)
+group.1_group.3_property=@jcr:content/cq:description
+group.1_group.3_property.operation=exists
+
+# Page Title (SHOULD)
+group.1_group.4_property=@jcr:content/cq:title
+group.1_group.4_property.operation=exists
+
+# Order by last modified date
+orderby=@jcr:content/cq:lastModified
+orderby.sort=desc
