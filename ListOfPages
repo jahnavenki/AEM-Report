@@ -95,3 +95,19 @@ The script is added before the <style> tag and the rest of the content to ensure
 This pre-hiding script adds a style element that sets the body’s opacity to 0. After 3 seconds, or when the CSS has loaded, it removes the style element, making the page visible.
 No need to modify the existing HTML structure (i.e., no need for a <head> or <body> tag).
 This approach keeps your code unchanged while preventing flickering effectively.
+
+..................
+<div class="rawtext text aem-GridColumn aem-GridColumn--default--12"><div id="rawtext-e69386efd3"><br><!-- Pre-Hiding Code -->
+<script>
+
+  !function(e,a,n,t){var i=e.head;if(i){
+
+  if (a) return;
+
+  var o=e.createElement("style");
+
+  o.id="alloy-prehiding",o.innerText=n,i.appendChild(o),setTimeout(function(){o.parentNode&&o.parentNode.removeChild(o)},t)}}
+
+  (document, document.location.href.indexOf("adobe_authoring_enabled") !== -1, "body { opacity: 0 !important }", 3000);
+
+</script>
