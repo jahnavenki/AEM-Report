@@ -12,3 +12,81 @@ We will need to place this pre-hiding snippet to manage the flicker:
   (document, document.location.href.indexOf("adobe_authoring_enabled") !== -1, "body { opacity: 0 !important }", 3000);
 
 </script>
+
+.............................................
+<style>
+	body {
+        background: #fff !important;
+    }
+	.campaign-container {
+		display: flex;
+		padding: 28px 100px;
+	}
+	@media only screen and (min-width: 200px) and (max-width: 767px) {
+		.HeroHeading .HeroHeading__Content .wrapper {
+			height: 400px;
+		}
+		.cba-section-logo {
+			position: absolute !important;
+			top: 318px !important;
+			right: 108px !important;
+		}
+	}
+	@media only screen and (min-width: 200px) and (max-width: 992px) {
+		.campaign-container {
+			padding: 28px 24px;
+		}
+		.fullWidthImageWrapper {
+			background: #fff !important;
+		}
+	}
+	@media only screen and (min-width: 993px) and (max-width: 1200px) {
+		.campaign-container {
+			padding: 28px 0px;
+		}
+		.HeroHeading .HeroHeading__Content {
+			top: -48px !important;
+		}
+	}
+	@media only screen and (min-width: 1200px) {
+		.HeroHeading .HeroHeading__Content {
+			top: -15px !important;
+		}
+	}
+	.cmp-container {
+		border-bottom: 1px solid #ccc;
+	}
+	.campaign-logo,.campaign-contact {
+		width: 50%;
+	}
+	.campaign-contact {
+		text-align: right;
+		color: var(--Text-Link, #164A9A);
+		font-family: Roboto;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 300;
+		line-height: 150%; 
+	}
+	.cba-section-logo {
+		position: relative;
+		top: 150px;
+		right: 120px;
+	}
+
+	.fullWidthWrapper .fullWidthImageWrapper .HeroHeading__Heading, .fullWidthWrapper .fullWidthImageWrapper .HeroHeading__SubHeading {
+		color: #000 !important;
+	}
+	.HeroHeading .HeroHeading__Heading>span, .fullWidthWrapper .fullWidthImageWrapper .HeroHeading__SubHeading {
+		font-family: NanumMyeongjo;
+	}
+
+</style>
+
+<div class="wrapper">
+<div class="campaign-container">
+	<div class="campaign-logo"><img src="/content/dam/cfs-winged/images/primary-colour.png"></img></div>
+	</div>
+</div>
+
+https://www.stg.cfs.com.au/test-campaign-latest.html
