@@ -1,50 +1,14 @@
-Url: MUST
+We will need to place this pre-hiding snippet to manage the flicker:
+<script>
 
-Publish date: MUST
+  !function(e,a,n,t){var i=e.head;if(i){
 
-Name of page:  SHOULD
+  if (a) return;
 
-Page Title:  SHOULD
+  var o=e.createElement("style");
 
-Meta description: SHOULD
+  o.id="alloy-prehiding",o.innerText=n,i.appendChild(o),setTimeout(function(){o.parentNode&&o.parentNode.removeChild(o)},t)}}
 
-Tags: COULD
-.......................................
-group.3_group.path=/content/cfs-winged/au/en/about-us
-group.3_group.path.self=true
-group.3_group.type=cq:Page
-group.3_group.1_property=@jcr:content/hideInNav
-group.3_group.1_property.operation=not
-group.3_group.1_property.value=exists
-group.3_group.2_property=@jcr:content/jcr:created
-group.3_group.2_property.operation=exists
-group.3_group.1_path.operation=not
-group.1_group.1_path.value=exists
+  (document, document.location.href.indexOf("adobe_authoring_enabled") !== -1, "body { opacity: 0 !important }", 3000);
 
-fulltext=Trustee and fund documents
-orderby=@jcr:content/cq:lastModified
-orderby.sort=desc
-
-
-roup.1_group.path=/content/cfs-winged/au/en/about-us
-group.1_group.type=cq:Page
-
-# Ensure the page has a publish date (MUST)
-group.1_group.1_property=@jcr:content/cq:lastReplicated
-group.1_group.1_property.operation=exists
-
-# Tags (COULD)
-group.1_group.2_property=@jcr:content/cq:tags
-group.1_group.2_property.operation=exists
-
-# Meta description (SHOULD)
-group.1_group.3_property=@jcr:content/cq:description
-group.1_group.3_property.operation=exists
-
-# Page Title (SHOULD)
-group.1_group.4_property=@jcr:content/cq:title
-group.1_group.4_property.operation=exists
-
-# Order by last modified date
-orderby=@jcr:content/cq:lastModified
-orderby.sort=desc
+</script>
