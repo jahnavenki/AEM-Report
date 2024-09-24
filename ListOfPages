@@ -90,3 +90,8 @@ We will need to place this pre-hiding snippet to manage the flicker:
 </div>
 
 https://www.stg.cfs.com.au/test-campaign-latest.html
+
+The script is added before the <style> tag and the rest of the content to ensure the page is hidden (with opacity: 0) before any flicker can occur.
+This pre-hiding script adds a style element that sets the body’s opacity to 0. After 3 seconds, or when the CSS has loaded, it removes the style element, making the page visible.
+No need to modify the existing HTML structure (i.e., no need for a <head> or <body> tag).
+This approach keeps your code unchanged while preventing flickering effectively.
