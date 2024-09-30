@@ -430,3 +430,16 @@
 
 <sly data-sly-call="${templates.placeholder @ isEmpty = model.cardItems.size == 0, classAppend = ''}"></sly>
 ...................................................
+30.09.2024 03:31:29.578 [cm-p110482-e1080534-prev-aem-publish-664bdf8c88-kk7cz] *ERROR* [FelixLogListener] LogService.org.apache.felix.eventadmin Service [PWA Manifest - Sling Event Handler,5138, [org.osgi.service.event.EventHandler]] EventAdmin: Exception during event dispatch [org.osgi.service.event.Event [topic=com/day/cq/wcm/core/page] {modifications=[{path=/content/cfs-winged/au/en/adviser/investments/investment-managers/cohen-steers/thank-you, modifiedDate=Mon Sep 30 03:31:29 UTC 2024, type=PageCreated, userId=sling-distribution-importer}, {path=/content/cfs-winged/au/en/adviser/investments-adviser/investment-partners/cohen-steers/thank-you, modifiedDate=Mon Sep 30 03:31:29 UTC 2024, changes=[jcr:content/pwaOrientation, jcr:content/jcr:createdBy, jcr:content/jcr:mixinTypes, jcr:content/jcr:isCheckedOut, jcr:content/jcr:uuid, jcr:content/jcr:versionHistory, jcr:content/jcr:title, jcr:content/pwaCachestrategy, jcr:content/jcr:created, jcr:content/sling:resourceType, jcr:content, jcr:content/cq:lastModifiedBy, jcr:content/backgroundBlur, jcr:content/jcr:predecessors, jcr:content/pwaDisplay, jcr:content/cq:lastModified, jcr:content/pageStyling, jcr:content/cq:template, jcr:content/analyticsPageName, jcr:content/jcr:baseVersion, jcr:content/hideInNav, jcr:content/jcr:primaryType], type=PageModified, userId=sling-distribution-importer}]} | [org.osgi.service.event.EventHandler] | Bundle(com.adobe.cq.wcm.com.adobe.aem.wcm.pwa [540]) | Handler(com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor@47d0c1cb)] (java.lang.NullPointerException)
+java.lang.NullPointerException: null
+	at com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor.isPWAEnabled(PWAManifestProcessor.java:127) [com.adobe.cq.wcm.com.adobe.aem.wcm.pwa:1.0.14]
+	at com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor.handleEvent(PWAManifestProcessor.java:107) [com.adobe.cq.wcm.com.adobe.aem.wcm.pwa:1.0.14]
+	at org.apache.felix.eventadmin.impl.handler.EventHandlerProxy.sendEvent(EventHandlerProxy.java:432) [org.apache.felix.eventadmin:1.6.4]
+	at org.apache.felix.eventadmin.impl.tasks.HandlerTask.runWithoutDenylistTiming(HandlerTask.java:82) [org.apache.felix.eventadmin:1.6.4]
+	at org.apache.felix.eventadmin.impl.tasks.SyncDeliverTasks.execute(SyncDeliverTasks.java:107) [org.apache.felix.eventadmin:1.6.4]
+	at org.apache.felix.eventadmin.impl.tasks.AsyncDeliverTasks$TaskExecuter.run(AsyncDeliverTasks.java:167) [org.apache.felix.eventadmin:1.6.4]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
