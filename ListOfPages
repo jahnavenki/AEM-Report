@@ -430,68 +430,60 @@
 
 <sly data-sly-call="${templates.placeholder @ isEmpty = model.cardItems.size == 0, classAppend = ''}"></sly>
 ...................................................
-(function (document, $) {
+(function(document, $) {
     "use strict";
 
-    // When the dialog gets injected
-    $(document).on("foundation-contentloaded", function (e) {
-        // Apply show/hide logic for any checkboxes or dropdowns
-        $(".cq-dialog-checkbox-showhide").each(function () {
+    // Maximum number of items allowed in the multifield
+    var maxItems = 5; // Change this to your desired max item count
+    console.log("Max items allowed:", maxItems);
+
+    // when dialog gets injected
+    $(document).on("foundation-contentloaded", function(e) {
+        console.log("Dialog content loaded.");
+        // if there is already an initial value make sure the according target element becomes visible
+        $(".cq-dialog-checkbox-showhide").each(function() {
             showHide($(this));
         });
 
-        // Check multifield item limit on dialog load
-        checkMultifieldItemLimit();
+        // Initial check for multifields
+        checkItemsCount('.editorialCards');
+        checkItemsCount('.centerCards');
+        checkItemsCount('.leftCards');
     });
 
-    // When the checkbox or dropdown is changed
-    $(document).on("change", ".cq-dialog-checkbox-showhide", function (e) {
+    // when checkbox clicked
+    $(document).on("change", ".cq-dialog-checkbox-showhide", function(e) {
+        console.log("Checkbox state changed:", $(this).is(":checked"));
         showHide($(this));
     });
 
-    // When an item is added or removed in the multifield
-    $(document).on("click", ".js-coral-Multifield-add, .js-coral-Multifield-remove", function () {
-        setTimeout(function () {
-            checkMultifieldItemLimit();
-        }, 0);
-    });
-
+    // Function to show/hide elements based on checkbox state
     function showHide($el) {
-        var shouldShowWhenChecked = $el.data('should-show-when-checked'); 
+        var shouldShowWhenChecked = $el.data('should-show-when-checked'); // toggle direction
         var isChecked = $el.is(":checked");
         var targetElementSelector = $el.data('show-hide-target');
         var $targetElement = $('#' + targetElementSelector);
 
         var isVisible = shouldShowWhenChecked ? isChecked : !isChecked;
+        console.log("Target element:", targetElementSelector, "Visible:", isVisible);
         $targetElement.toggleClass('hide', !isVisible);
+
+        // After showing/hiding, check the item count
+        checkItemsCount(targetElementSelector);
     }
 
-    function checkMultifieldItemLimit() {
-        var maxItems = 150; // Maximum allowed items
-
-        // Multifield selectors
-        var multifields = [
-            { selector: ".cmp-teaser__editor-multifield_actions", type: "editorialCards" },
-            { selector: "[name='./centerCards']", type: "centerCards" },
-            { selector: "[name='./leftCards']", type: "leftCards" }
-        ];
-
-        multifields.forEach(function (multifield) {
-            var $multifield = $(multifield.selector);
-            var $addButton = $multifield.find(".js-coral-Multifield-add");
-            var numItems = $multifield.find(".coral-Multifield-item").length;
-
-            // Disable add button and show error message if the item limit is reached
-            if (numItems >= maxItems) {
-                $addButton.prop("disabled", true);
-                if (!$("#maxItemsError-" + multifield.type).length) {
-                    $addButton.after('<div id="maxItemsError-' + multifield.type + '" style="color:red">Maximum limit of ' + maxItems + ' items reached for ' + multifield.type + '.</div>');
-                }
-            } else {
-                $addButton.prop("disabled", false);
-                $("#maxItemsError-" + multifield.type).remove();
-            }
-        });
+    // Function to check the number of items in the multifield
+    function checkItemsCount(multifieldSelector) {
+        var itemCount = $(multifieldSelector).find('.cq-Form-fieldContainer').length;
+        console.log("Item count for", multifieldSelector, ":", itemCount);
+        if (itemCount >= maxItems) {
+            console.log("Max items reached. Disabling add button.");
+            // Disable adding new items if the limit is reached
+            $(multifieldSelector).find('.cq-Form-fieldContainer .cq-Add').attr('disabled', 'disabled');
+        } else {
+            console.log("Items available for addition. Enabling add button.");
+            $(multifieldSelector).find('.cq-Form-fieldContainer .cq-Add').removeAttr('disabled');
+        }
     }
 
 })(document, Granite.$);
