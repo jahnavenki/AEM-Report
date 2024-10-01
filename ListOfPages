@@ -488,3 +488,63 @@
 
 })(document, Granite.$);
 
+...........''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+(function(document, $) {
+    "use strict";
+
+    // Maximum number of items allowed in the multifield
+    var maxItems = 5; // Change this to your desired max item count
+    console.log("Max items allowed:", maxItems);
+
+    // when dialog gets injected
+    $(document).on("foundation-contentloaded", function(e) {
+        console.log("Dialog content loaded.");
+        // if there is already an initial value make sure the according target element becomes visible
+        $(".cq-dialog-checkbox-showhide").each(function() {
+            showHide($(this));
+        });
+
+        // Initial check for multifields
+        checkItemsCount('.editorialCards');
+        checkItemsCount('.centerCards');
+        checkItemsCount('.leftCards');
+    });
+
+    // when checkbox clicked
+    $(document).on("change", ".cq-dialog-checkbox-showhide", function(e) {
+        console.log("Checkbox state changed:", $(this).is(":checked"));
+        showHide($(this));
+    });
+
+    // Function to show/hide elements based on checkbox state
+    function showHide($el) {
+        var shouldShowWhenChecked = $el.data('should-show-when-checked'); // toggle direction
+        var isChecked = $el.is(":checked");
+        var targetElementSelector = $el.data('show-hide-target');
+        var $targetElement = $('#' + targetElementSelector);
+
+        var isVisible = shouldShowWhenChecked ? isChecked : !isChecked;
+        console.log("Target element:", targetElementSelector, "Visible:", isVisible);
+        $targetElement.toggleClass('hide', !isVisible);
+
+        // After showing/hiding, check the item count
+        checkItemsCount(targetElementSelector);
+    }
+
+    // Function to check the number of items in the multifield
+    function checkItemsCount(multifieldSelector) {
+        var itemCount = $(multifieldSelector).find('.cq-Form-fieldContainer').length;
+        console.log("Item count for", multifieldSelector, ":", itemCount);
+        if (itemCount >= maxItems) {
+            console.log("Max items reached. Disabling add button.");
+            $(multifieldSelector).find('.cq-Form-fieldContainer .cq-Add').attr('disabled', 'disabled');
+            
+            // Alert message (can be replaced with a nicer UI notification)
+            alert("You cannot add more than " + maxItems + " items.");
+        } else {
+            console.log("Items available for addition. Enabling add button.");
+            $(multifieldSelector).find('.cq-Form-fieldContainer .cq-Add').removeAttr('disabled');
+        }
+    }
+
+})(document, Granite.$);
