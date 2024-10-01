@@ -625,4 +625,23 @@
     }
 
 })(document, Granite.$);
+11111111111111111111111111111111
+
+When raising a support ticket with Adobe Support regarding the issues with multifields, pagination, and the "Add" button disappearing in AEM as a Cloud Service, it's important to provide detailed and structured information. Here's a sample template you can use to describe the issue:
+
+Subject: Issue with Multifield Pagination and "Add" Button in AEM as a Cloud Service
+Priority: High
+Product: AEM as a Cloud Service
+Version: [Provide your current version of AEM]
+Environment: [dev01, dev02, stage, prod - whichever environment the issue is occurring in]
+Component: Granite Multifield with Pagination
+
+Description of the Issue: We are currently facing an issue with the Multifield component in AEM as a Cloud Service where the "Add" button disappears when adding more than 70 items, despite having pagination enabled. This issue is affecting our ability to allow users to add and manage multiple items in the multifield within the content editor.
+
+Here are the specific details:
+
+We are using a Granite Multifield component that supports composite fields and has a maximum limit of items set to 70 items per page.
+Pagination is implemented to manage the items. However, after reaching around 70 items, the "Add" button disappears unexpectedly, and users are unable to add more items.
+There are no error messages displayed in the console, and the dialog does not provide feedback to the user when this happens.
+Custom JavaScript has been implemented to manage the max items limit, which includes showing/hiding the "Add" button. Despite the script functioning as expected with smaller datasets, the issue persists with larger datasets.
 
