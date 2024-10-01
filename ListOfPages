@@ -430,16 +430,69 @@
 
 <sly data-sly-call="${templates.placeholder @ isEmpty = model.cardItems.size == 0, classAppend = ''}"></sly>
 ...................................................
-30.09.2024 03:31:29.578 [cm-p110482-e1080534-prev-aem-publish-664bdf8c88-kk7cz] *ERROR* [FelixLogListener] LogService.org.apache.felix.eventadmin Service [PWA Manifest - Sling Event Handler,5138, [org.osgi.service.event.EventHandler]] EventAdmin: Exception during event dispatch [org.osgi.service.event.Event [topic=com/day/cq/wcm/core/page] {modifications=[{path=/content/cfs-winged/au/en/adviser/investments/investment-managers/cohen-steers/thank-you, modifiedDate=Mon Sep 30 03:31:29 UTC 2024, type=PageCreated, userId=sling-distribution-importer}, {path=/content/cfs-winged/au/en/adviser/investments-adviser/investment-partners/cohen-steers/thank-you, modifiedDate=Mon Sep 30 03:31:29 UTC 2024, changes=[jcr:content/pwaOrientation, jcr:content/jcr:createdBy, jcr:content/jcr:mixinTypes, jcr:content/jcr:isCheckedOut, jcr:content/jcr:uuid, jcr:content/jcr:versionHistory, jcr:content/jcr:title, jcr:content/pwaCachestrategy, jcr:content/jcr:created, jcr:content/sling:resourceType, jcr:content, jcr:content/cq:lastModifiedBy, jcr:content/backgroundBlur, jcr:content/jcr:predecessors, jcr:content/pwaDisplay, jcr:content/cq:lastModified, jcr:content/pageStyling, jcr:content/cq:template, jcr:content/analyticsPageName, jcr:content/jcr:baseVersion, jcr:content/hideInNav, jcr:content/jcr:primaryType], type=PageModified, userId=sling-distribution-importer}]} | [org.osgi.service.event.EventHandler] | Bundle(com.adobe.cq.wcm.com.adobe.aem.wcm.pwa [540]) | Handler(com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor@47d0c1cb)] (java.lang.NullPointerException)
-java.lang.NullPointerException: null
-	at com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor.isPWAEnabled(PWAManifestProcessor.java:127) [com.adobe.cq.wcm.com.adobe.aem.wcm.pwa:1.0.14]
-	at com.adobe.aem.wcm.pwa.impl.event.PWAManifestProcessor.handleEvent(PWAManifestProcessor.java:107) [com.adobe.cq.wcm.com.adobe.aem.wcm.pwa:1.0.14]
-	at org.apache.felix.eventadmin.impl.handler.EventHandlerProxy.sendEvent(EventHandlerProxy.java:432) [org.apache.felix.eventadmin:1.6.4]
-	at org.apache.felix.eventadmin.impl.tasks.HandlerTask.runWithoutDenylistTiming(HandlerTask.java:82) [org.apache.felix.eventadmin:1.6.4]
-	at org.apache.felix.eventadmin.impl.tasks.SyncDeliverTasks.execute(SyncDeliverTasks.java:107) [org.apache.felix.eventadmin:1.6.4]
-	at org.apache.felix.eventadmin.impl.tasks.AsyncDeliverTasks$TaskExecuter.run(AsyncDeliverTasks.java:167) [org.apache.felix.eventadmin:1.6.4]
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at java.base/java.lang.Thread.run(Thread.java:834)
+(function (document, $) {
+    "use strict";
+
+    // When the dialog gets injected
+    $(document).on("foundation-contentloaded", function (e) {
+        // Apply show/hide logic for any checkboxes or dropdowns
+        $(".cq-dialog-checkbox-showhide").each(function () {
+            showHide($(this));
+        });
+
+        // Check multifield item limit on dialog load
+        checkMultifieldItemLimit();
+    });
+
+    // When the checkbox or dropdown is changed
+    $(document).on("change", ".cq-dialog-checkbox-showhide", function (e) {
+        showHide($(this));
+    });
+
+    // When an item is added or removed in the multifield
+    $(document).on("click", ".js-coral-Multifield-add, .js-coral-Multifield-remove", function () {
+        setTimeout(function () {
+            checkMultifieldItemLimit();
+        }, 0);
+    });
+
+    function showHide($el) {
+        var shouldShowWhenChecked = $el.data('should-show-when-checked'); 
+        var isChecked = $el.is(":checked");
+        var targetElementSelector = $el.data('show-hide-target');
+        var $targetElement = $('#' + targetElementSelector);
+
+        var isVisible = shouldShowWhenChecked ? isChecked : !isChecked;
+        $targetElement.toggleClass('hide', !isVisible);
+    }
+
+    function checkMultifieldItemLimit() {
+        var maxItems = 150; // Maximum allowed items
+
+        // Multifield selectors
+        var multifields = [
+            { selector: ".cmp-teaser__editor-multifield_actions", type: "editorialCards" },
+            { selector: "[name='./centerCards']", type: "centerCards" },
+            { selector: "[name='./leftCards']", type: "leftCards" }
+        ];
+
+        multifields.forEach(function (multifield) {
+            var $multifield = $(multifield.selector);
+            var $addButton = $multifield.find(".js-coral-Multifield-add");
+            var numItems = $multifield.find(".coral-Multifield-item").length;
+
+            // Disable add button and show error message if the item limit is reached
+            if (numItems >= maxItems) {
+                $addButton.prop("disabled", true);
+                if (!$("#maxItemsError-" + multifield.type).length) {
+                    $addButton.after('<div id="maxItemsError-' + multifield.type + '" style="color:red">Maximum limit of ' + maxItems + ' items reached for ' + multifield.type + '.</div>');
+                }
+            } else {
+                $addButton.prop("disabled", false);
+                $("#maxItemsError-" + multifield.type).remove();
+            }
+        });
+    }
+
+})(document, Granite.$);
+
